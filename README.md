@@ -1,9 +1,13 @@
 # Small Office Network Build: Complete Networking Fundamentals Lab
 
 > **Category:** Networking
+> 
 > **Status:** Live
+> 
 > **Course:** Cisco Networking Basics · Junior Cybersecurity Analyst Career Path
+> 
 > **Author:** Ozioma Inya         <!-- REPLACE with your name -->
+> 
 > **Date:** August, 2025              <!-- REPLACE e.g. "February, 2025" -->
 
 ---
