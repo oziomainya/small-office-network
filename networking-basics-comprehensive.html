@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Small Office Network Build: Complete Networking Fundamentals Lab</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23050505'/><text x='50' y='68' font-family='monospace' font-size='48' font-weight='bold' fill='%2300ff41' text-anchor='middle'>OZI</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+<script>
+
+  /*
+  ==============================================================
+  YOUR PROJECT DETAILS -- EDIT THIS SECTION ONLY
+  ==============================================================
+  Everything you need to fill in is marked with REPLACE.
+  The rest of the file builds the page automatically.
+  DO NOT edit anything below the closing comment block.
+  ==============================================================
+  */
+
+  const PROJECT = {
+
+    title:    "Small Office Network Build: Complete Networking Fundamentals Lab",
+    category: "networking",
+    status:   "live",
+    author:   "Ozioma Inya",       // REPLACE with your name
+    date:     "August, 2025",          // REPLACE e.g. "February, 2025"
+
+    overview: "A complete network infrastructure built for a small office (TechCorp) from scratch in Cisco Packet Tracer. Covers network design, wireless configuration, OSI and TCP/IP models, IPv4 addressing and subnetting, IPv6, DHCP, routing, ARP, transport and application layer services, and full network testing. Completed as part of the Cisco Networking Academy Junior Cybersecurity Analyst career path.",
+
+    objectives: [
+      "Design a small office network topology covering wired LAN, wireless, and a simulated internet connection",
+      "Configure a wireless router with SSID, WPA2 security, and DHCP for wireless clients",
+      "Document the OSI and TCP/IP models and map each layer to real protocols used in the topology",
+      "Select and justify appropriate network media types for each network segment",
+      "Demonstrate Ethernet switching and MAC address table behaviour at the access layer",
+      "Design and implement a complete IPv4 addressing scheme with subnetting",
+      "Configure IPv6 addresses on router interfaces and demonstrate dual-stack operation",
+      "Configure a DHCP server to automatically assign IP addresses to wired clients",
+      "Configure inter-network routing and demonstrate ARP and gateway operation",
+      "Analyse TCP and UDP behaviour using Packet Tracer simulation mode",
+      "Configure DNS and HTTP services on a local server and verify name resolution",
+      "Verify full end-to-end connectivity using ping, traceroute, and show commands",
+    ],
+
+    tools: [
+      { name: "Cisco Packet Tracer",           purpose: "Network simulation; wired, wireless, routing, and services" },
+      { name: "Cisco IOS CLI",                 purpose: "Router and switch configuration" },
+      { name: "Packet Tracer Simulation Mode", purpose: "Observing packet flow, ARP, TCP, and application traffic" },
+      { name: "ICMP Ping and Traceroute",      purpose: "End-to-end connectivity verification" },
+    ],
+
+    skills: [
+      "Network Design", "Network Topology", "Network Types", "Client-Server Model",
+      "Wireless Configuration", "WPA2 Security", "OSI Model", "TCP/IP Model",
+      "Network Media", "Ethernet", "MAC Address Table", "IPv4 Addressing",
+      "Subnetting", "CIDR", "IPv6 Addressing", "Dual-Stack", "DHCP",
+      "Default Gateway", "Static Routing", "ARP", "TCP", "UDP", "Port Numbers",
+      "DNS", "HTTP", "Ping", "Traceroute", "Cisco IOS CLI", "Packet Tracer",
+    ],
+
+    /*
+    -- PARTS ------------------------------------------------
+    Each part covers one or more course modules.
+    type: "lab" shows a code block. "doc" shows content blocks.
+    For lab parts: fill in desc and code.
+    For doc parts: fill in desc and the content array.
+    */
+
+    parts: [
+      {
+        id:      "PART 01",
+        modules: "",
+        title:   "Network Design and Topology Planning",
+        type:    "lab",
+        desc:    "Designed the TechCorp office network topology before opening Packet Tracer. Identified all required devices and their roles. Router (R1) serves as the gateway between the LAN and the simulated internet, a switch (SW1) as the access layer device, two PCs as wired workstations, a server providing DNS and HTTP services, and a wireless router for mobile devices. Documented the network as a client-server model. All workstations are clients, the server provides services, and R1 connects the LAN to external networks.",
+        code:    `TechCorp Network Design:
+
+  DEVICE INVENTORY:
+    R1          -- 1941 Router       -- LAN gateway and WAN connection
+    SW1         -- 2960 Switch       -- Access layer, connects all wired devices
+    PC1         -- Generic PC        -- Wired workstation (client)
+    PC2         -- Generic PC        -- Wired workstation (client)
+    Server      -- Generic Server    -- DNS and HTTP services (server)
+    WR1         -- Wireless Router   -- Wireless access for laptops and mobiles
+    Laptop      -- Generic Laptop    -- Wireless client
+    ISP         -- Generic Router    -- Simulates internet/ISP connection
+
+  NETWORK TYPES IN USE:
+    LAN         -- 192.168.1.0/24   -- Wired office network
+    WLAN        -- 192.168.2.0/24   -- Wireless network via WR1
+    WAN         -- 10.0.0.0/30      -- Point-to-point link to ISP
+
+  MODEL: Client-Server
+    Clients: PC1, PC2, Laptop (request services)
+    Servers: Server (provides DNS and HTTP)
+    Intermediary: R1, SW1, WR1 (forward and direct traffic)`,
+      },
+      {
+        id:      "PART 02",
+        modules: "",
+        title:   "Wireless Network Configuration",
+        desc:    "Added a wireless router (WR1) to the topology, connected it to SW1, and configured it to provide a wireless network for mobile devices. Set the SSID to TechCorp-WiFi and secured it with WPA2-PSK. Enabled the DHCP server on WR1 to automatically assign addresses in the 192.168.2.0/24 range. Connected a laptop as a wireless client and verified it received an address and could communicate.",
+        type:    "lab",
+        code:    `Wireless Router (WR1) Configuration:
+
+  Basic Setup:
+    WR1 Internet IP:   192.168.1.50 / 255.255.255.0
+    WR1 Gateway:  192.168.1.1 (R1)
+    WR1 DNS:      192.168.1.100 (local server)
+
+  Wireless Settings:
+    SSID:         TechCorp-WiFi
+    Band:         2.4 GHz
+    Security:     WPA2-PSK
+    Passphrase:   TechCorp2024!
+
+  DHCP Pool (for wireless clients):
+    Network:      192.168.2.0 / 255.255.255.0
+    Default GW:   192.168.2.1 (WR1 wireless interface)
+    DNS:          192.168.1.100
+    Range:        192.168.2.100 - 192.168.2.149
+
+  Wireless Client (Laptop):
+    Connected to: TechCorp-WiFi
+    Assigned IP:  192.168.2.102 (via DHCP)
+    Gateway:      192.168.2.1`,
+      },
+      {
+        id:      "PART 03",
+        modules: "",
+        title:   "OSI and TCP/IP Model Documentation",
+        type:    "doc",
+        desc:    "Documented how the OSI and TCP/IP models apply to traffic in the TechCorp network. Mapped each layer to the protocols and devices operating at that layer within the topology.",
+        content: [
+          {
+            heading: "The OSI Model",
+            body: "The OSI (Open Systems Interconnection) model divides network communication into seven layers: Physical, Data Link, Network, Transport, Session, Presentation, and Application. Each layer has a specific function and communicates with the layers directly above and below it. The model provides a universal reference framework for understanding how different network technologies interact.",
+          },
+          {
+            heading: "OSI Layers Mapped to the TechCorp Network",
+            body: "Layer 1 (Physical): Copper UTP cables connect PCs and the server to SW1. The wireless radio signal connects the laptop to WR1. Layer 2 (Data Link): SW1 operates at this layer. It uses MAC addresses to forward Ethernet frames between devices on the same LAN. Layer 3 (Network): R1 operates at this layer. It uses IP addresses to route packets between the LAN, WLAN, and WAN. Layer 4 (Transport): TCP carries HTTP and DNS traffic. UDP carries DNS queries. Layer 7 (Application): HTTP delivers web pages from the server. DNS resolves hostnames to IP addresses.",
+          },
+          {
+            heading: "TCP/IP vs OSI",
+            body: "The TCP/IP model condenses the seven OSI layers into four: Network Access (OSI Layers 1-2), Internet (OSI Layer 3), Transport (OSI Layer 4), and Application (OSI Layers 5-7). In practice, the TCP/IP model is the one used on real networks. The OSI model remains valuable as a conceptual reference for understanding how each layer contributes to end-to-end communication.",
+          },
+        ],
+      },
+      {
+        id:      "PART 04",
+        modules: "",
+        title:   "Network Media Selection",
+        type:    "doc",
+        desc:    "Documented the media type selection for each segment of the TechCorp network, with justification for each choice.",
+        content: [
+          {
+            heading: "Wired Segments: UTP Copper",
+            body: "All wired connections in the TechCorp LAN use straight-through Category 6 (Cat6) UTP copper cables. Cat6 supports Gigabit Ethernet (1000BASE-T) at distances up to 100 metres, more than sufficient for a small office. Straight-through cables connect unlike devices (PC to switch, router to switch). UTP is the most cost-effective choice for short-range LAN connections and is easy to install and replace.",
+          },
+          {
+            heading: "WAN Segment: Serial or Ethernet",
+            body: "The WAN connection between R1 and the ISP router uses a point-to-point link. In a real deployment this would typically be a fibre or leased line circuit. In Packet Tracer, a serial DCE/DTE cable or straight-through Ethernet is used to simulate this link. The 10.0.0.0/30 subnet (/30 = 2 usable addresses) is the standard choice for point-to-point WAN links as it wastes no addresses.",
+          },
+          {
+            heading: "Wireless Segment: IEEE 802.11",
+            body: "The wireless segment uses the IEEE 802.11 standard. WPA2 (Wi-Fi Protected Access 2) with AES encryption secures the wireless link. Wireless media is susceptible to interference, eavesdropping, and signal degradation over distance, which is why WPA2-PSK (Pre-Shared Key) authentication and encryption is the minimum acceptable security standard for any wireless deployment.",
+          },
+        ],
+      },
+      {
+        id:      "PART 05",
+        modules: "",
+        title:   "Access Layer and Ethernet Switching",
+        type:    "lab",
+        desc:    "Verified how SW1 operates at the access layer by examining its MAC address table before and after generating traffic. The switch learns MAC addresses dynamically. The first time it sees a frame from a device, it records the source MAC and the port the frame arrived on. Subsequent frames destined for that MAC are forwarded directly to the correct port rather than flooded to all ports.",
+        code:    `-- Before any traffic: MAC table is empty
+SW1# show mac address-table
+Mac Address Table
+------------------------------------------
+Vlan  Mac Address       Type    Ports
+----  -----------       ------  -----
+(no entries)
+
+-- After communication on the network: SW1 learns all MACs
+SW1# show mac address-table 
+          Mac Address Table
+-------------------------------------------
+
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+
+   1    0005.5ea9.eec5    DYNAMIC     Fa0/2
+   1    0006.2ad4.d7eb    DYNAMIC     Fa0/3
+   1    00e0.a395.9c44    DYNAMIC     Fa0/1
+   1    00e0.b019.2101    DYNAMIC     Gig0/1
+   1    00e0.f998.ec01    DYNAMIC     Fa0/4
+
+Key observations:
+  - Switch populates the table dynamically from source MACs
+  - Unknown destination MACs are flooded to all ports
+  - Known destination MACs are forwarded directly
+  - Table entries age out if no traffic is seen`,
+      },
+      {
+        id:      "PART 06",
+        modules: "",
+        title:   "IPv4 Addressing Scheme",
+        type:    "lab",
+        desc:    "Designed the complete IPv4 addressing scheme for the TechCorp network. The LAN uses the 192.168.1.0/24 network, the wireless uses 192.168.2.0/24, and the WAN link uses a /30 subnet. Subnetting is applied to efficiently segment the network. Each subnet is sized appropriately for the number of hosts it needs to support. Configured all devices with static IPv4 addresses. Servers and printers use static IPs; workstations use DHCP (configured in Part 08).",
+        code:    `IPv4 Addressing Table:
+
+  DEVICE      INTERFACE    IP ADDRESS        SUBNET MASK       GATEWAY
+  R1          G0/0         192.168.1.1       255.255.255.0     --
+  R1          S0/0/0       10.0.0.2          255.255.255.252   --
+  ISP         S0/0/1       10.0.0.1          255.255.255.252   --
+  ISP         G0/0         8.8.8.1           255.255.255.0     --
+  SW1         VLAN 1       192.168.1.2       255.255.255.0     192.168.1.1
+  Server      NIC          192.168.1.100     255.255.255.0     192.168.1.1
+  WR1 (LAN)   NIC          192.168.1.50      255.255.255.0     192.168.1.1
+  PC1         NIC          DHCP              --                192.168.1.1
+  PC2         NIC          DHCP              --                192.168.1.1
+
+  Subnet Summary:
+  192.168.1.0/24  -- LAN (254 usable hosts)
+  192.168.2.0/24  -- WLAN via WR1 (254 usable hosts)
+  10.0.0.0/30     -- WAN point-to-point (2 usable hosts)`,
+      },
+      {
+        id:      "PART 07",
+        modules: "",
+        title:   "IPv6 Dual-Stack Configuration",
+        type:    "lab",
+        desc:    "Configured IPv6 addresses on R1 interfaces alongside the existing IPv4 addresses (dual-stack operation). Used a Global Unicast Address (GUA) on the LAN interface and a link-local address on the WAN. IPv6 uses 128-bit addresses written in hexadecimal, separated by colons. Leading zeros in each group can be omitted and consecutive all-zero groups can be replaced with a double colon, but only once per address.",
+        code:    `R1(config)# ipv6 unicast-routing
+
+R1(config)# interface GigabitEthernet0/0
+R1(config-if)# ipv6 address 2001:db8:acad:1::1/64
+R1(config-if)# ipv6 address fe80::1 link-local
+R1(config-if)# exit
+
+R1(config)# interface Serial0/0/0
+R1(config-if)# ipv6 address 2001:db8:acad:a::2/64
+R1(config-if)# exit
+
+R1# show ipv6 interface brief
+GigabitEthernet0/0         [up/up]
+    FE80::1
+    2001:DB8:ACAD:1::1
+GigabitEthernet0/1         [administratively down/down]
+    unassigned
+Serial0/0/0                [up/up]
+    FE80::2E0:B0FF:FE19:2101
+    2001:DB8:ACAD:A::2
+Serial0/0/1                [administratively down/down]
+    unassigned
+Vlan1                      [administratively down/down]
+    unassigned
+
+IPv6 Address Types Used:
+  Global Unicast (GUA):  2001:db8::/32 range -- routable on internet
+  Link-Local:            FE80::/10 range -- LAN only, not routed`,
+      },
+      {
+        id:      "PART 08",
+        modules: "",
+        title:   "DHCP Server Configuration",
+        type:    "lab",
+        desc:    "Configured R1 as a DHCP server for the wired LAN (192.168.1.0/24). The DHCP server assigns IP addresses, subnet masks, default gateways, and DNS server addresses automatically to PC1 and PC2 when they connect. Excluded the static IPs already in use (R1, SW1, Server, WR1) from the pool so they are never assigned dynamically. Verified that PC1 and PC2 received addresses from the pool.",
+        code:    `R1(config)# ip dhcp excluded-address 192.168.1.1 192.168.1.60
+
+R1(config)# ip dhcp pool LAN_POOL
+R1(dhcp-config)# network 192.168.1.0 255.255.255.0
+R1(dhcp-config)# default-router 192.168.1.1
+R1(dhcp-config)# dns-server 192.168.1.100
+R1(dhcp-config)# exit
+
+-- Verification after PC1 and PC2 request addresses:
+R1# show ip dhcp binding
+IP address       Client-ID/              Lease expiration        Type
+                 Hardware address
+192.168.1.61     00E0.A395.9C44           --                     Automatic
+192.168.1.62     0005.5EA9.EEC5           --                     Automatic
+
+-- On PC1 (command prompt):
+C:\>ipconfig
+
+FastEthernet0 Connection:(default port)
+
+   Connection-specific DNS Suffix..: 
+   Link-local IPv6 Address.........: FE80::2E0:A3FF:FE95:9C44
+   IPv6 Address....................: ::
+   IPv4 Address....................: 192.168.1.61
+   Subnet Mask.....................: 255.255.255.0
+   Default Gateway.................: ::
+                                     192.168.1.1`,
+      },
+      {
+        id:      "PART 09",
+        modules: "",
+        title:   "Routing, ARP, and Inter-Network Traffic",
+        type:    "lab",
+        desc:    "Configured static routes on R1 to reach the ISP and simulated internet. Observed the ARP process in Packet Tracer simulation mode. When PC1 sends its first packet to R1, it first sends an ARP broadcast to discover R1s MAC address. Once R1 responds, the MAC is cached and subsequent packets go directly. Verified inter-network routing by pinging the ISP and the simulated internet server from PC1.",
+        code:    `-- Static route on R1 to reach internet via ISP
+R1(config)# ip route 0.0.0.0 0.0.0.0 10.0.0.1
+
+-- Static route on ISP to reach the LAN
+ISP(config)# ip route 192.168.1.0 255.255.255.0 10.0.0.2
+ISP(config)# ip route 192.168.2.0 255.255.255.0 10.0.0.2
+
+-- Verify routing table on R1
+R1# show ip route
+Gateway of last resort is 10.0.0.1 to network 0.0.0.0
+
+     10.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       10.0.0.0/30 is directly connected, Serial0/0/0
+L       10.0.0.2/32 is directly connected, Serial0/0/0
+     192.168.1.0/24 is variably subnetted, 2 subnets, 2 masks
+C       192.168.1.0/24 is directly connected, GigabitEthernet0/0
+L       192.168.1.1/32 is directly connected, GigabitEthernet0/0
+S*   0.0.0.0/0 [1/0] via 10.0.0.1
+
+-- ARP table on PC1 after first ping to R1
+C:\>arp -a
+  Internet Address      Physical Address      Type
+  192.168.1.1           00e0.b019.2101        dynamic
+
+-- Ping from PC1 across networks
+C:\> ping 10.0.0.1    <- ISP    SUCCESS
+C:\> ping 8.8.8.1     <- Internet server    SUCCESS`,
+      },
+      {
+        id:      "PART 10",
+        modules: "",
+        title:   "Transport Layer Analysis",
+        type:    "doc",
+        desc:    "Used Packet Tracer simulation mode to observe TCP and UDP behaviour in the TechCorp network. Documented the key differences and the use cases for each protocol.",
+        content: [
+          {
+            heading: "TCP: Transmission Control Protocol",
+            body: "TCP is a connection-oriented protocol that provides reliable, ordered delivery of data. Before any data is sent, a three-way handshake establishes the connection: SYN (client to server), SYN-ACK (server to client), ACK (client to server). Each segment is acknowledged by the receiver. If an acknowledgment is not received within a timeout period, the sender retransmits. TCP is used by HTTP, HTTPS, FTP, and SSH; applications where reliability matters more than speed.",
+          },
+          {
+            heading: "UDP: User Datagram Protocol",
+            body: "UDP is a connectionless protocol. It sends datagrams without establishing a connection first and does not wait for acknowledgments. If a packet is lost, UDP does not retransmit it. This makes UDP faster and lower-overhead than TCP. UDP is used by DNS (for queries), DHCP, VoIP, and video streaming; applications where low latency matters more than guaranteed delivery.",
+          },
+          {
+            heading: "Port Numbers",
+            body: "Both TCP and UDP use port numbers to identify which application a packet belongs to. Well-known ports: HTTP uses TCP port 80, HTTPS uses TCP 443, DNS uses UDP port 53 (and TCP 53 for large responses), DHCP uses UDP 67 (server) and 68 (client), FTP uses TCP 20 and 21, SSH uses TCP 22. In the TechCorp network, PC1 browsing the server uses TCP port 80. PC1 resolving a hostname uses UDP port 53.",
+          },
+        ],
+      },
+      {
+        id:      "PART 11",
+        modules: "",
+        title:   "DNS and HTTP Service Configuration",
+        type:    "lab",
+        desc:    "Configured the Server device to provide DNS and HTTP services for the TechCorp network. The DNS service resolves the hostname www.techcorp.local to the servers IP address. The HTTP service hosts a simple internal web page. Verified that PC1 can access the web page by hostname rather than IP address, demonstrating the full application layer stack working end to end.",
+        code:    `Server Configuration (via Packet Tracer GUI):
+
+  DNS Service:
+    Status:   ON
+    Record:   www.techcorp.local  -->  192.168.1.100  (Type A)
+
+  HTTP Service:
+    Status:   ON
+    Default page served at: http://www.techcorp.local
+
+  Verification on PC1:
+
+  -- DNS resolution test
+  C:\>nslookup www.techcorp.local
+
+Server: [192.168.1.100]
+Address:  192.168.1.100
+
+Non-authoritative answer:
+Name:   www.techcorp.local
+Address:   192.168.1.100
+
+  -- HTTP access test (via PC1 web browser in Packet Tracer)
+  URL: http://www.techcorp.local
+  Result: Page loads successfully
+
+  -- Packet flow (observed in simulation mode):
+  PC1 --> DNS query (UDP 53) --> Server
+  Server --> DNS response --> PC1
+  PC1 --> HTTP GET (TCP 80) --> Server
+  Server --> HTTP 200 OK --> PC1`,
+      },
+      {
+        id:      "PART 12",
+        modules: "",
+        title:   "Full Network Verification",
+        type:    "lab",
+        desc:    "Ran a complete verification test of the TechCorp network using ping, traceroute, and show commands. Tested connectivity from every end device to every other device, verified routing paths, and confirmed all services were reachable. Documented all results as the final proof of a working network.",
+        code:    `-- Full connectivity matrix from PC1
+C:\> ping 192.168.1.62    <- PC2            SUCCESS
+C:\> ping 192.168.1.100   <- Server         SUCCESS
+C:\> ping 192.168.1.50    <- WR1            NAT-BLOCKED
+C:\> ping 192.168.1.1     <- R1 LAN         SUCCESS
+C:\> ping 192.168.1.2     <- SW1 VLAN 1     SUCCESS
+C:\> ping 10.0.0.1        <- ISP            SUCCESS
+C:\> ping 8.8.8.1         <- Internet       SUCCESS
+C:\> ping 192.168.2.100   <- Laptop (WLAN)  NAT-BLOCKED
+
+-- Traceroute from PC1 to internet
+C:\>tracert 8.8.8.1
+
+Tracing route to 8.8.8.1 over a maximum of 30 hops: 
+
+  1   1 ms      0 ms      14 ms     192.168.1.1
+  2   11 ms     1 ms      0 ms      8.8.8.1
+
+Trace complete.
+
+-- Show commands on R1
+R1# show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+GigabitEthernet0/0     192.168.1.1     YES manual up                    up 
+GigabitEthernet0/1     unassigned      YES unset  administratively down down 
+Serial0/0/0            10.0.0.2        YES manual up                    up 
+Serial0/0/1            unassigned      YES unset  administratively down down 
+Vlan1                  unassigned      YES unset  administratively down down
+
+R1# show ip dhcp binding
+IP address       Client-ID/              Lease expiration        Type
+                 Hardware address
+192.168.1.61     00E0.A395.9C44           --                     Automatic
+192.168.1.62     0005.5EA9.EEC5           --                     Automatic
+
+-- Wireless client verification
+Laptop> ping 192.168.1.100   <- Server from WLAN  SUCCESS`,
+      },
+    ],
+
+    results: [
+      { type: "success", text: "Full wired and wireless connectivity verified." },
+      { type: "success", text: "DHCP server on R1 assigned addresses to PC1 and PC2 automatically. Bbindings confirmed in show ip dhcp binding." },
+      { type: "success", text: "DNS name resolution working. www.techcorp.local resolves correctly to 192.168.1.100." },
+      { type: "success", text: "HTTP service accessible by hostname from PC1. Full application layer stack verified." },
+      { type: "success", text: "Routing to ISP and simulated internet confirmed.Traceroute shows correct path through R1 and ISP." },
+      { type: "success", text: "IPv6 dual-stack configured on R1. GUAs and link-local addresses verified on both interfaces." },
+      { type: "warning", text: "Laptop on WLAN initially could not reach Server. WR1 default gateway was not set, blocking routed traffic." },
+      { type: "fix",     text: "Set WR1 default gateway to 192.168.1.1 (R1 LAN IP) and laptop could then reach all wired devices." },
+      { type: "warning", text: "DNS resolution failed initially as DNS server IP on DHCP pool was set to 192.168.1.1 instead of 192.168.1.100." },
+      { type: "fix",     text: "Corrected dns-server address in the DHCP pool config and renewed PC1 address -- resolution worked immediately." },
+    ],
+
+    lessons: [
+      {
+        title: "Every layer of the OSI model is visible in a real topology",
+        text:  "Mapping the OSI model to actual devices and protocols in the topology; Layer 2 on SW1, Layer 3 on R1, Layer 7 on the server made the model concrete rather than abstract. When troubleshooting, thinking layer by layer immediately narrows down where a problem lives.",
+      },
+      {
+        title: "DHCP and DNS failures are the most common cause of connectivity complaints",
+        text:  "Both issues encountered in this lab. WR1 missing a default gateway and the wrong DNS server in the DHCP pool are exactly the kind of misconfiguration that produces confusing symptoms. The device appears connected but nothing works. Checking DHCP bindings and DNS server assignment should be early steps in any troubleshooting workflow.",
+      },
+      {
+        title: "ARP is invisible until something goes wrong",
+        text:  "Simulation mode made the ARP process visible; the broadcast before the first ping, the unicast ARP reply, the caching of the MAC. In normal operation this is invisible. But ARP spoofing attacks exploit exactly this process, which is why understanding it matters for cybersecurity as much as for networking.",
+      },
+      {
+        title: "The /30 subnet for WAN links is a standard worth remembering",
+        text:  "A /30 subnet (255.255.255.252) provides exactly two usable host addresses perfect for a point-to-point link between two routers. It wastes no addresses and makes the addressing scheme clean. This is a real-world standard used consistently in enterprise networks.",
+      },
+      {
+        title: "Wireless is a different security problem from wired",
+        text:  "The wired LAN traffic stays on the cable. The wireless signal radiates outward and can be received by anyone in range. WPA2 with a strong passphrase is the minimum and even then, the wireless segment should be treated as less trusted than the wired LAN.",
+      },
+    ],
+
+    githubLink:     "https://github.com/oziomainya/small-office-network",   // REPLACE with GitHub repo URL when ready
+    portfolioLink:  "https://oziomainya.github.io",   // REPLACE with portfolio URL when ready
+    authorLinkedIn: "https://linkedin.com/in/ozioma-inya-a46327304",   // REPLACE with LinkedIn URL when ready
+
+  };
+
+  /*
+  ==============================================================
+  DO NOT EDIT BELOW THIS COMMENT BLOCK
+  ==============================================================
+  */
+
+</script>
+
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050505;--bg-2:#0c0c0c;--bg-card:#0f0f0f;--bg-code:#080808;
+  --green:#00ff41;--green-d:#00b32d;--green-dk:#001f08;
+  --cyan:#00e5ff;--cyan-d:#00a8c0;
+  --amber:#ffd600;--red:#ff4444;--text:#ccffcc;
+  --text-2:#5a8f5a;--text-m:#2a4a2a;
+  --border:rgba(0,255,65,.09);--border-s:rgba(0,255,65,.22);
+  --font:'JetBrains Mono','Courier New',monospace
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.7;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,65,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,65,.02) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.1) 2px,rgba(0,0,0,.1) 4px);pointer-events:none;z-index:999}
+nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(5,5,5,.97);border-bottom:1px solid var(--border);padding:0 2.5rem;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-back{color:var(--text-2);text-decoration:none;font-size:11px;letter-spacing:.1em;transition:color .2s}
+.nav-back::before{content:'<- ';color:var(--text-m)}
+.nav-back:hover{color:var(--green)}
+.nav-id{color:var(--text-m);font-size:11px;letter-spacing:.1em}
+main{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:6rem 2.5rem 5rem}
+.proj-header{margin-bottom:4rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border)}
+.proj-meta{display:flex;align-items:center;gap:.65rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.meta-cat{font-size:9px;letter-spacing:.15em;padding:3px 10px;border-radius:2px;background:var(--green-dk);color:var(--green);border:1px solid rgba(0,255,65,.2)}
+.meta-status{font-size:9px;letter-spacing:.12em;display:inline-flex;align-items:center;gap:5px}
+.meta-status::before{content:'';width:6px;height:6px;border-radius:50%;animation:pulse 2s ease-in-out infinite}
+.meta-status.live{color:var(--green)}.meta-status.live::before{background:var(--green)}
+.meta-status.wip{color:var(--cyan)}.meta-status.wip::before{background:var(--cyan)}
+.meta-status.soon{color:var(--amber)}.meta-status.soon::before{background:var(--amber)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.meta-source{font-size:9px;letter-spacing:.08em;padding:3px 10px;border-radius:2px;background:rgba(0,229,255,.05);color:var(--cyan-d);border:1px solid rgba(0,229,255,.15)}
+.meta-date{font-size:10px;color:var(--text-m)}
+.proj-title{font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:700;color:var(--green);letter-spacing:-.02em;margin-bottom:1rem;line-height:1.2}
+.proj-overview{font-size:13px;color:var(--text-2);line-height:2;max-width:640px}
+.proj-actions{display:flex;gap:.75rem;margin-top:2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem 1.2rem;font-family:var(--font);font-size:11px;letter-spacing:.1em;cursor:pointer;transition:all .18s;text-decoration:none;border-radius:2px}
+.btn-p{background:var(--green-dk);color:var(--green);border:1px solid rgba(0,255,65,.3)}
+.btn-p:hover{background:var(--green);color:#030d06}
+.btn-s{background:transparent;color:var(--text-2);border:1px solid var(--border-s)}
+.btn-s:hover{color:var(--cyan);border-color:rgba(0,229,255,.3)}
+.section{margin-bottom:3.5rem}
+.sh{display:flex;align-items:center;gap:1rem;margin-bottom:1.75rem;color:var(--text-2);font-size:12px;letter-spacing:.1em}
+.sh::before{content:'$';color:var(--green);font-size:14px;font-weight:700}
+.sh::after{content:'';flex:1;height:1px;background:var(--border)}
+.obj-list{display:flex;flex-direction:column;gap:.6rem}
+.obj-item{display:flex;align-items:flex-start;gap:.75rem;background:var(--bg-card);border:1px solid var(--border);border-radius:3px;padding:.85rem 1.1rem;font-size:12px;color:var(--text-2);transition:border-color .2s}
+.obj-item:hover{border-color:var(--border-s)}
+.obj-num{color:var(--text-m);flex-shrink:0;min-width:22px}
+.tools-table{width:100%;border-collapse:collapse;font-size:12px}
+.tools-table th{text-align:left;padding:.6rem 1rem;color:var(--text-m);font-weight:400;font-size:10px;letter-spacing:.1em;border-bottom:1px solid var(--border)}
+.tools-table td{padding:.7rem 1rem;border-bottom:1px solid var(--border);color:var(--text-2)}
+.tools-table tr:last-child td{border-bottom:none}
+.tools-table tr:hover td{color:var(--text)}
+.tool-name{color:var(--green);font-weight:500}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:.4rem}
+.tag{display:inline-block;padding:3px 10px;font-size:10px;border-radius:2px;letter-spacing:.04em;background:rgba(0,255,65,.06);color:var(--green-d);border:1px solid rgba(0,255,65,.14)}
+.topo-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:4px;padding:1.5rem;overflow-x:auto}
+.topo-diagram{font-size:11px;color:var(--green-d);line-height:2.1;white-space:pre;font-family:var(--font);margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.topo-table{width:100%;border-collapse:collapse;font-size:11px}
+.topo-table th{text-align:left;padding:.5rem .85rem;color:var(--text-m);font-weight:400;font-size:10px;letter-spacing:.1em;border-bottom:1px solid var(--border)}
+.topo-table td{padding:.6rem .85rem;border-bottom:1px solid var(--border);color:var(--text-2)}
+.topo-table tr:last-child td{border-bottom:none}
+.topo-hl{color:var(--green) !important;font-weight:500}
+.topo-ip{color:var(--cyan-d) !important}
+.part{background:var(--bg-card);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:1.25rem;transition:border-color .2s}
+.part:hover{border-color:var(--border-s)}
+.part-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border)}
+.part-id{font-size:9px;color:var(--text-m);letter-spacing:.15em;margin-bottom:.2rem}
+.part-modules{font-size:9px;color:var(--cyan-d);letter-spacing:.06em;margin-bottom:.4rem}
+.part-title{font-size:13px;font-weight:700;color:var(--green)}
+.part-body{padding:1rem 1.25rem}
+.part-desc{font-size:12px;color:var(--text-2);line-height:1.9;margin-bottom:.75rem}
+.part-code{background:var(--bg-code);border:1px solid rgba(0,255,65,.07);border-radius:3px;padding:1rem 1.25rem;font-size:11px;color:var(--green-d);overflow-x:auto;white-space:pre;line-height:1.8}
+.content-block{margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)}
+.content-block:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.content-heading{font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:.06em;margin-bottom:.5rem}
+.content-body{font-size:12px;color:var(--text-2);line-height:2}
+.results-list{display:flex;flex-direction:column;gap:.6rem}
+.result{display:flex;align-items:flex-start;gap:.85rem;padding:.9rem 1.1rem;border-radius:3px;border:1px solid;font-size:12px;line-height:1.8}
+.result.success{background:rgba(0,255,65,.04);border-color:rgba(0,255,65,.12);color:var(--text-2)}
+.result.success .ri{color:var(--green);flex-shrink:0}
+.result.warning{background:rgba(255,214,0,.04);border-color:rgba(255,214,0,.12);color:var(--text-2)}
+.result.warning .ri{color:var(--amber);flex-shrink:0}
+.result.fix{background:rgba(0,229,255,.04);border-color:rgba(0,229,255,.12);color:var(--text-2)}
+.result.fix .ri{color:var(--cyan);flex-shrink:0}
+.lessons-list{display:flex;flex-direction:column;gap:1rem}
+.lesson{background:var(--bg-card);border:1px solid var(--border);border-radius:4px;padding:1.25rem;transition:border-color .2s}
+.lesson:hover{border-color:var(--border-s)}
+.lesson-n{font-size:9px;color:var(--text-m);letter-spacing:.15em;margin-bottom:.35rem}
+.lesson-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:.4rem}
+.lesson-text{font-size:12px;color:var(--text-2);line-height:1.9}
+.screenshot-placeholder{background:var(--bg-card);border:1px dashed rgba(0,255,65,.15);border-radius:4px;padding:2.5rem;text-align:center;font-size:11px;color:var(--text-m);letter-spacing:.05em}
+.screenshots{display:flex;flex-direction:column;gap:1.5rem}
+.screenshot-item{display:flex;flex-direction:column;gap:.6rem}
+.screenshot-item img{width:100%;border-radius:4px;border:1px solid rgba(0,255,65,.1);display:block}
+.screenshot-caption{font-size:10px;color:var(--text-m);letter-spacing:.08em;padding-left:.25rem}
+footer{position:relative;z-index:1;text-align:center;padding:2rem;border-top:1px solid var(--border);color:var(--text-m);font-size:10px;letter-spacing:.1em}
+@media(max-width:620px){main{padding:5rem 1.25rem 3rem}nav{padding:0 1.25rem}.proj-title{font-size:1.5rem}.topo-diagram{font-size:9px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a id="nav-back" href="#" class="nav-back">Back to Portfolio</a>
+  <span class="nav-id" id="nav-id"></span>
+</nav>
+
+<main>
+  <header class="proj-header" id="proj-header"></header>
+
+  <div class="section">
+    <div class="sh">cat objectives.txt</div>
+    <div class="obj-list" id="obj-list"></div>
+  </div>
+
+  <div class="section">
+    <div class="sh">cat tools.txt</div>
+    <table class="tools-table">
+      <thead><tr><th>TOOL / TECHNOLOGY</th><th>PURPOSE</th></tr></thead>
+      <tbody id="tools-body"></tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="sh">cat skills.txt</div>
+    <div class="tags-wrap" id="tags-wrap"></div>
+  </div>
+
+  <div class="section">
+    <div class="sh">cat topology.txt</div>
+    <div class="topo-wrap">
+      <pre class="topo-diagram">  [ISP Cloud: 8.8.8.1]
+       |
+  [ISP Router: 10.0.0.1] ----------- WAN: 10.0.0.0/30
+       |
+  [R1: S0/0/0: 10.0.0.2 / G0/0: 192.168.1.1]
+       |
+     [SW1: 192.168.1.2]
+    /    |     |     \
+  [PC1] [PC2] [Server] [WR1: 192.168.1.50]
+  DHCP  DHCP  .100       |
+                    [Laptop: 192.168.2.x DHCP via WR1]
+
+  LAN:  192.168.1.0/24
+  WLAN: 192.168.2.0/24
+  WAN:  10.0.0.0/30</pre>
+      <table class="topo-table">
+        <thead><tr><th>DEVICE</th><th>INTERFACE</th><th>IP ADDRESS</th><th>ROLE</th></tr></thead>
+        <tbody>
+          <tr><td class="topo-hl">R1</td><td>G0/0</td><td class="topo-ip">192.168.1.1</td><td>LAN gateway / DHCP server</td></tr>
+          <tr><td class="topo-hl">R1</td><td>S0/0/0</td><td class="topo-ip">10.0.0.2</td><td>WAN uplink to ISP</td></tr>
+          <tr><td class="topo-hl">ISP</td><td>S0/0/1</td><td class="topo-ip">10.0.0.1</td><td>Simulated ISP router</td></tr>
+          <tr><td class="topo-hl">ISP</td><td>G0/0</td><td class="topo-ip">8.8.8.1</td><td>Simulated internet</td></tr>
+          <tr><td class="topo-hl">SW1</td><td>VLAN 1</td><td class="topo-ip">192.168.1.2</td><td>Access layer switch</td></tr>
+          <tr><td class="topo-hl">Server</td><td>NIC</td><td class="topo-ip">192.168.1.100</td><td>DNS and HTTP server</td></tr>
+          <tr><td class="topo-hl">WR1</td><td>LAN</td><td class="topo-ip">192.168.1.50</td><td>Wireless access point</td></tr>
+          <tr><td class="topo-hl">PC1</td><td>NIC</td><td class="topo-ip">DHCP (.61)</td><td>Wired workstation</td></tr>
+          <tr><td class="topo-hl">PC2</td><td>NIC</td><td class="topo-ip">DHCP (.62)</td><td>Wired workstation</td></tr>
+          <tr><td class="topo-hl">Laptop</td><td>Wireless</td><td class="topo-ip">DHCP (192.168.2.x)</td><td>Wireless client</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sh">cat lab_parts.txt</div>
+    <div id="parts-list"></div>
+  </div>
+
+  <div class="section">
+    <div class="sh">cat results.txt</div>
+    <div class="results-list" id="results-list"></div>
+  </div>
+
+  <div class="section">
+    <div class="sh">ls ./evidence/</div>
+    <div class="screenshots">
+
+  <div class="screenshot-item">
+    <img src="topology.png" alt="Full network topology">
+    <span class="screenshot-caption">Fig 1 - Full TechCorp topology in Packet Tracer</span>
+  </div>
+
+  <div class="screenshot-item">
+    <img src="SW1-mac-address-table.png" alt="MAC address table">
+    <span class="screenshot-caption">Fig 2 - SW1 MAC address table</span>
+  </div>
+
+  <div class="screenshot-item">
+    <img src="R1-dhcp-binding.png" alt="DHCP bindings">
+    <span class="screenshot-caption">Fig 3 - show ip dhcp binding on R1</span>
+  </div>
+
+  <div class="screenshot-item">
+    <img src="R1-ip-route.png" alt="Routing table">
+    <span class="screenshot-caption">Fig 4 - show ip route on R1</span>
+  </div>
+
+  <div class="screenshot-item">
+    <img src="R1-interface-brief.png" alt="Interface Information">
+    <span class="screenshot-caption">Fig 5 - show ip interface brief on R1</span>
+  </div>
+
+  <div class="screenshot-item">
+    <img src="dns-record.png" alt="DNS resolution">
+    <span class="screenshot-caption">Fig 6 - nslookup verification</span>
+  </div>
+
+  <div class="screenshot-item">
+    <img src="http-access.png" alt="HTTP Access">
+    <span class="screenshot-caption">Fig 7 - HTTP access verification</span>
+  </div>
+
+  <div class="screenshot-item">
+    <img src="ping-statistics.png" alt="Ping Verification">
+    <span class="screenshot-caption">Fig 8 - Full Network Verification</span>
+  </div>
+
+</div>
+  </div>    
+
+  <div class="section">
+    <div class="sh">cat lessons_learned.txt</div>
+    <div class="lessons-list" id="lessons-list"></div>
+  </div>
+
+</main>
+
+<footer id="footer"></footer>
+
+<script>
+var sl = { soon:'COMING SOON', wip:'IN PROGRESS', live:'LIVE' };
+var ri = { success:'v', warning:'!', fix:'+', fail:'x' };
+
+if(PROJECT.portfolioLink) document.getElementById('nav-back').href = PROJECT.portfolioLink;
+document.getElementById('nav-id').textContent = 'SMALL OFFICE NETWORK BUILD: COMPLETE NETWORKING FUNDAMENTALS LAB';
+
+var gh  = PROJECT.githubLink    ? '<a href="' + PROJECT.githubLink + '" target="_blank" class="btn btn-p">View on GitHub</a>' : '';
+var pfl = PROJECT.portfolioLink ? '<a href="' + PROJECT.portfolioLink + '" class="btn btn-s">Back to Portfolio</a>' : '';
+document.getElementById('proj-header').innerHTML =
+  '<div class="proj-meta">' +
+    '<span class="meta-cat">NETWORKING</span>' +
+    '<span class="meta-status ' + PROJECT.status + '">' + (sl[PROJECT.status] || PROJECT.status.toUpperCase()) + '</span>' +
+    '<span class="meta-source">CISCO NETWORKING BASICS · JUNIOR CYBERSECURITY ANALYST PATH</span>' +
+    '<span class="meta-date">' + PROJECT.date + ' by ' + PROJECT.author + '</span>' +
+  '</div>' +
+  '<h1 class="proj-title">' + PROJECT.title + '</h1>' +
+  '<p class="proj-overview">' + PROJECT.overview + '</p>' +
+  ((gh || pfl) ? '<div class="proj-actions">' + gh + pfl + '</div>' : '');
+
+var ol = document.getElementById('obj-list');
+PROJECT.objectives.forEach(function(o, i) {
+  ol.innerHTML += '<div class="obj-item"><span class="obj-num">' + String(i+1).padStart(2,'0') + '.</span><span>' + o + '</span></div>';
+});
+
+var tb = document.getElementById('tools-body');
+PROJECT.tools.forEach(function(t) {
+  tb.innerHTML += '<tr><td class="tool-name">' + t.name + '</td><td>' + t.purpose + '</td></tr>';
+});
+
+var tw = document.getElementById('tags-wrap');
+PROJECT.skills.forEach(function(s) {
+  tw.innerHTML += '<span class="tag">' + s + '</span>';
+});
+
+var pl = document.getElementById('parts-list');
+PROJECT.parts.forEach(function(p) {
+  var body = '';
+  if (p.type === 'lab') {
+    body = '<div class="part-desc">' + p.desc + '</div>';
+    if (p.code) body += '<pre class="part-code">' + p.code + '</pre>';
+  } else {
+    body = '<div class="part-desc">' + p.desc + '</div>';
+    if (p.content) {
+      p.content.forEach(function(c) {
+        body += '<div class="content-block"><div class="content-heading">' + c.heading + '</div><div class="content-body">' + c.body + '</div></div>';
+      });
+    }
+  }
+  pl.innerHTML +=
+    '<div class="part">' +
+      '<div class="part-header">' +
+        '<div class="part-id">' + p.id + '</div>' +
+        '<div class="part-modules">' + p.modules + '</div>' +
+        '<div class="part-title">' + p.title + '</div>' +
+      '</div>' +
+      '<div class="part-body">' + body + '</div>' +
+    '</div>';
+});
+
+var rl = document.getElementById('results-list');
+PROJECT.results.forEach(function(r) {
+  rl.innerHTML += '<div class="result ' + r.type + '"><span class="ri">' + (ri[r.type] || '.') + '</span><span>' + r.text + '</span></div>';
+});
+
+var ll = document.getElementById('lessons-list');
+PROJECT.lessons.forEach(function(l, i) {
+  ll.innerHTML +=
+    '<div class="lesson">' +
+      '<div class="lesson-n">LESSON ' + String(i+1).padStart(2,'0') + '</div>' +
+      '<div class="lesson-title">' + l.title + '</div>' +
+      '<div class="lesson-text">' + l.text + '</div>' +
+    '</div>';
+});
+
+var lnk = PROJECT.authorLinkedIn
+  ? '<a href="' + PROJECT.authorLinkedIn + '" style="color:var(--green-d);text-decoration:none">' + PROJECT.author + '</a>'
+  : PROJECT.author;
+document.getElementById('footer').innerHTML =
+  '<p>' + lnk + ' &nbsp;.&nbsp; NETWORKING PROJECT &nbsp;.&nbsp; CISCO NETWORKING BASICS &nbsp;.&nbsp; <span style="color:var(--green)">LIVE</span></p>';
+</script>
+</body>
+</html>
