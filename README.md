@@ -1,4 +1,4 @@
-# Small Office Network Build: Complete Networking Fundamentals Lab
+# TechCorp Solutions: Office Network Build from Scratch
 
 > **Category:** Networking
 > 
@@ -14,7 +14,7 @@
 
 ## Overview
 
-A complete network infrastructure built for a small office (TechCorp) from scratch in Cisco Packet Tracer. Covers network design, wireless configuration, OSI and TCP/IP models, IPv4 addressing and subnetting, IPv6, DHCP, routing, ARP, transport and application layer services, and full network testing.
+TechCorp Solutions is a tech startup moving into its first office. Before launch day, the network needs to be designed, built, and fully operational from addressing scheme to wireless to internet connectivity.
 
 ---
 
