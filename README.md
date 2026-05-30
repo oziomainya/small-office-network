@@ -39,7 +39,7 @@ TechCorp Solutions is a tech startup moving into its first office. Before launch
 
 | Tool | Purpose |
 |---|---|
-| Cisco Packet Tracer | Network simulation -- wired, wireless, routing, and services |
+| Cisco Packet Tracer | Network simulation; wired, wireless, routing, and services |
 | Cisco IOS CLI | Router and switch configuration |
 | Packet Tracer Simulation Mode | Observing packet flow, ARP, TCP, and application traffic |
 | ICMP Ping and Traceroute | End-to-end connectivity verification |
