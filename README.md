@@ -18,6 +18,23 @@ TechCorp Solutions is a tech startup moving into its first office. Before launch
 
 ---
 
+## Client Brief
+
+| Detail | Info |
+|---|---|
+| Client | TechCorp Solutions |
+| Industry | Technology Startup |
+| Site | First office: 15 staff across development and operations |
+| Task | Build the complete office network from scratch before launch day |
+
+**Project Context:** TechCorp Solutions just signed a lease on its first office.
+The network needs to be fully operational before the team moves in; wired
+workstations, wireless for mobile devices, a local server for internal tools,
+and a connection to the internet. There is no existing infrastructure.
+Everything is being built from zero.
+
+---
+
 ## Objectives
 
 - [x] Design a small office network topology covering wired LAN, wireless, and simulated internet
